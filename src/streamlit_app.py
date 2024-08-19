@@ -11,7 +11,7 @@ price_df = pd.read_csv('wfp_food_prices_hti.csv', header=0,  skiprows=[1,])
 current_data = price_df.sort_values(by=['date'])
 all_departement = ['all'] + list(price_df['admin1'].unique())
 all_market = ['all'] + list(price_df['market'].unique())
-all_prince = ['HTG', 'USD']
+all_price = ['HTG', 'USD']
 
 disable = False
 with st.sidebar:
@@ -34,6 +34,11 @@ with st.sidebar:
         disabled=disable
     )
 
+    p_option = st.selectbox(
+        "Choose a a currency",
+        tuple(all_price),
+    )
+
 
 if d_option in all_departement:
     st.header('Haiti Food price...')
@@ -48,33 +53,36 @@ if d_option in all_departement:
     with st.container():
         c3.write("c3")
         c4.write("c4")
-
+    if p_option == 'HTG':
+        y = "price"
+    else:
+        y = "usdprice"
     with c1:
         mais_data = current_data[current_data['commodity']
                                  == 'Maize meal (local)']
-        c_fig = px.line(mais_data, x='date', y="price",
-                        title='Maize meal (local)')
+        c_fig = px.line(mais_data, x='date', y=y,
+                        title=f'Maize meal (local) in {p_option}')
         st.plotly_chart(c_fig)
 
     with c2:
         rice_data = current_data[current_data['commodity']
                                  == 'Rice (tchako)']
-        r_fig = px.line(rice_data, x='date', y="price",
-                        title='Rice (tchako)')
+        r_fig = px.line(rice_data, x='date', y=y,
+                        title=f'Rice (tchako) in {p_option}')
         st.plotly_chart(r_fig)
 
     with c3:
         wheat_data = current_data[current_data['commodity']
                                   == 'Wheat flour (imported)']
-        w_fig = px.line(wheat_data, x='date', y="price",
-                        title='Wheat flour (imported)')
+        w_fig = px.line(wheat_data, x='date', y=y,
+                        title=f'Wheat flour (imported) in {p_option}')
         st.plotly_chart(w_fig)
 
     with c4:
         m_i_data = current_data[current_data['commodity']
                                 == 'Maize meal (imported)']
-        mi_fig = px.line(m_i_data, x='date', y="price",
-                         title='Maize meal (imported)')
+        mi_fig = px.line(m_i_data, x='date', y=y,
+                         title=f'Maize meal (imported) in {p_option}')
         st.plotly_chart(mi_fig)
 
 # fig_m = px.line(malaria_df, x='YEAR (DISPLAY)', y="Numeric", title=m_title)
