@@ -7,7 +7,7 @@ import plotly.express as px
 # import streamlit_option_menu
 # from streamlit_option_menu import option_menu
 
-price_df = pd.read_csv('wfp_food_prices_hti.csv', header=0,  skiprows=[1,])
+price_df = pd.read_csv('src/wfp_food_prices_hti.csv', header=0,  skiprows=[1,])
 current_data = price_df.sort_values(by=['date'])
 all_departement = ['all'] + list(price_df['admin1'].unique())
 all_market = ['all'] + list(price_df['market'].unique())
